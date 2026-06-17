@@ -198,3 +198,31 @@
     border-right-color: var(--border);
   }
 }
+
+@keyframes breathe {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes floatBrackets {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.animate-breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+.animate-float-brackets {
+  animation: floatBrackets 3s ease-in-out infinite;
+}
