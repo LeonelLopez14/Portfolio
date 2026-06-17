@@ -1,6 +1,11 @@
+import '../index.css';
+import Hero from '../components/Hero'
+
 function Home() {
     return (
-        <></>
+        <>
+        <Hero />
+        </>
     )
 }
 

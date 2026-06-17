@@ -7,15 +7,12 @@ import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 import Projects from './pages/Projects';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
 import Footer from './components/Footer';
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <Hero />
-      <Footer />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -24,6 +21,7 @@ function App() {
         {/* Ruta para páginas inexistentes */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }
