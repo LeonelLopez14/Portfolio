@@ -7,7 +7,7 @@ function Footer () {
 
     <div className="max-w-6xl mx-auto flex flex-col items-center">
 
-        <h2 className="text-3xl font-bold text-white uppercase">
+        <h2 className="text-4xl font-bold text-white uppercase">
             {"{ Castagno Dev }"}
         </h2>
 
@@ -15,7 +15,7 @@ function Footer () {
             Construyendo software por pasión.
         </p>
 
-        <div className="flex gap-10 mt-6">
+        <div className="flex gap-10 mt-6 text-white">
             <a href="https://github.com/LeonelLopez14" target="_blank" rel="noreferrer"
             className=" hover:scale-175 transition-all duration-300">
                 <FiGithub size={24} />
