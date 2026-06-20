@@ -49,7 +49,7 @@ function Projects() {
     return (
         <section
             id="projects"
-            className="w-full min-h-screen py-30"
+            className="w-full min-h-screen py-30 bg-linear-to-b from-slate-950 via-slate-900 to-blue-950"
         >
             <h1
                 className="
