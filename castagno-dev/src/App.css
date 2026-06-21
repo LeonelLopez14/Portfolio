@@ -230,3 +230,7 @@ html {
 .animate-float-brackets {
   animation: floatBrackets 3s ease-in-out infinite;
 }
+
+.blob {
+  filter: blur(120px);
+}

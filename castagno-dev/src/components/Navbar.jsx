@@ -12,8 +12,6 @@ const navItems = [
     { name: "CONTACTO", path: "/contact", icon: FiMail }
 ];
 
-
-
 function Navbar() {
     const textRefs = useRef([]);
     const iconRefs = useRef([]);
@@ -25,29 +23,19 @@ function Navbar() {
     const [hovered, setHovered] = useState(false);
     // funcion y evento scrolled para activar o desactivar la animacion
     const [scrolled, setScrolled] = useState(false);
+
     useEffect(() => {
-            gsap.set(iconRefs.current, {
+        gsap.from(containerRef.current, {
+            y: -100,
             opacity: 0,
-            scale: 0.8
+            duration: 1,
+            ease: 'power3.out'
         });
+    }, []);
+
+    useEffect(() => {
+            
         if (!navRef.current) return;
-
-        const yaAnimado =
-            sessionStorage.getItem('navbarAnimated');
-
-        if (!yaAnimado) {
-            gsap.from(navRef.current, {
-                y: -100,
-                opacity: 0,
-                duration: 1,
-                ease: 'power3.out'
-            });
-        }
-
-        sessionStorage.setItem(
-            'navbarAnimated',
-            'true'
-        )
 
         const handleScroll = () => {
             if (window.scrollY > 50) {
@@ -72,40 +60,39 @@ function Navbar() {
 
         if (showText) {
 
-            tl.to(containerRef.current, {
-                paddingInline: 40,
-                duration: 0.4,
-                ease: 'power3.out'
-            }, 0);
+        tl.to(linkRefs.current, {
+            width: 120,
+            duration: 0.35,
+            ease: 'power3.out'
+        }, 0);
 
-            tl.to(listRef.current, {
-                gap: 32,
-                duration: 0.4,
-                ease: 'power3.out'
-            }, 0);
+        tl.to(containerRef.current, {
+            paddingInline: 40,
+            duration: 0.35,
+            ease: 'power3.out'
+        }, 0);
 
-            tl.to(iconRefs.current, {
-                opacity: 0,
-                y: -10,
-                scale: 0.8,
-                stagger: 0.03,
-                duration: 0.25
-            }, 0);
+        tl.to(listRef.current, {
+            gap: 32,
+            duration: 0.35,
+            ease: 'power3.out'
+        }, 0);
 
-            tl.to(textRefs.current, {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                stagger: 0.03,
-                duration: 0.3
-            }, '-=0.1');
+        tl.to(iconRefs.current, {
+            opacity: 0,
+            y: -10,
+            scale: 0.8,
+            duration: 0.2,
+            stagger: 0.03
+        }, 0);
 
-            tl.to(linkRefs.current, {
-                width: 120,
-                duration: 0.3,
-                ease: 'power3.out'
-            });
-
+        tl.to(textRefs.current, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.25,
+            stagger: 0.03
+        }, 0.3);
         } else {
 
             tl.to(containerRef.current, {
@@ -125,13 +112,14 @@ function Navbar() {
                 y: 10,
                 scale: 0.8,
                 stagger: 0.03,
-                duration: 0.25
-            }, 0);
+                duration: 0.3
+            }, 0.2);
 
             tl.to(iconRefs.current, {
                 opacity: 1,
+                padding: 12,
                 y: 0,
-                scale: 1,
+                scale: 1.2,
                 stagger: 0.03,
                 duration: 0.35
             }, 0.1);
@@ -176,25 +164,26 @@ function Navbar() {
                             <Link
                                 ref={(el) => (linkRefs.current[index] = el)}
                                 to={item.path}
-    className="
-        relative
-        flex
-        items-center
-        justify-center
-        overflow-hidden
-    "
->
+                                className="
+                                    relative
+                                    flex
+                                    items-center
+                                    justify-center
+                                    overflow-hidden
+                                    w-30
+                                    h-8
+                                "
                             >
                                 <span
                                     ref={(el) => (textRefs.current[index] = el)}
-                                    className="absolute whitespace-nowrap"
+                                    className="absolute whitespace-nowrap  pointer-events-none"
                                 >
                                     {item.name}
                                 </span>
 
                                 <span
                                     ref={(el) => (iconRefs.current[index] = el)}
-                                    lassName="absolute opacity-0"
+                                    className="absolute opacity-0  pointer-events-none"
                                 >
                                     <item.icon />
                                 </span>
