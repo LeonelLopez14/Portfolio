@@ -9,6 +9,7 @@ import Projects from './pages/Projects';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -21,6 +22,9 @@ function App() {
         {/* Ruta para páginas inexistentes */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <About/>
+      <Projects/>
+      <Contact/>
       <Footer />
     </BrowserRouter>
   );
