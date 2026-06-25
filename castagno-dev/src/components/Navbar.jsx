@@ -148,7 +148,7 @@ function Navbar() {
                     backdrop-blur-md
                     text-white
                     shadow-lg
-                    z-10
+                    z-50
                     left-1/2
                     -translate-x-1/2
                     top-5

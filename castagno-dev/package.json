@@ -13,6 +13,7 @@
     "@gsap/react": "^2.1.2",
     "@tailwindcss/vite": "^4.3.0",
     "emailjs-com": "^3.2.0",
+    "flag-icons": "^7.5.0",
     "gsap": "^3.15.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
