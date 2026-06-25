@@ -315,13 +315,10 @@ function About() {
 
                 {/* Título skills */}
                 <div className="flex flex-col items-center mb-12">
-                    <p className="uppercase tracking-[6px] text-cyan-400 text-sm font-medium mb-3">Stack técnico</p>
-                    <h3
+                    <p 
                         ref={skillsTitleRef}
-                        className="text-4xl md:text-5xl font-black text-white mb-10 opacity-0 tracking-tight"
-                    >
-                        Tecnologías
-                    </h3>
+                        className="uppercase tracking-[6px] text-cyan-400 text-2xl font-medium mb-3">Stack técnico</p>
+                    
 
                     {/* Leyenda */}
                     <div
