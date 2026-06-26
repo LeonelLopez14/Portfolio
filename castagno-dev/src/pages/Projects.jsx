@@ -279,11 +279,6 @@ function Projects() {
             className="relative w-full min-h-screen py-28 px-6 overflow-hidden"
             style={{ background: "radial-gradient(ellipse 80% 50% at 50% 0%, #0a1628 0%, #080c14 60%)" }}
         >
-            {/* Grid de fondo */}
-            <div className="absolute inset-0 pointer-events-none" style={{
-                backgroundImage: "linear-gradient(rgba(34,211,238,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.03) 1px, transparent 1px)",
-                backgroundSize: "56px 56px"
-            }} />
 
             <div className="relative z-10 max-w-5xl mx-auto">
 

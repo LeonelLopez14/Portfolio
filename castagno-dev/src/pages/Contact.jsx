@@ -152,22 +152,35 @@ function Contact() {
         return () => observer.disconnect();
     }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setSending(true);
-
-        // Animación del botón
         gsap.to(btnRef.current, { scale: 0.95, duration: 0.1, yoyo: true, repeat: 1 });
 
-        // Simular envío (reemplazá con tu lógica real)
-        setTimeout(() => {
-            setSending(false);
+        const form = e.target;
+        try {
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name:    form.name.value,
+                    mail:    form.mail.value,
+                    subject: form.subject.value,
+                    message: form.message.value,
+                }),
+            });
+
+            if (!res.ok) throw new Error('Error');
             setSent(true);
             gsap.fromTo(btnRef.current,
                 { scale: 0.9, opacity: 0 },
                 { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2)' }
             );
-        }, 1800);
+        } catch {
+            alert('Hubo un error al enviar. Intentá de nuevo.');
+        } finally {
+            setSending(false);
+        }
     };
 
     const socials = [
