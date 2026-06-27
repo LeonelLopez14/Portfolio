@@ -23,7 +23,7 @@ const statusGlow = {
     futuro:      "hover:shadow-violet-500/20",
 };
 
-// ─── Canvas ondas (reutilizado del Hero) ─────────────────────────────────────
+// ─── Canvas ondas ─────────────────────────────────────────────────────────────
 function WaveCanvas({ speed = 0.0001, opacity = 1 }) {
     const canvasRef = useRef(null);
     useEffect(() => {
@@ -64,7 +64,7 @@ function WaveCanvas({ speed = 0.0001, opacity = 1 }) {
     return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0, opacity }} />;
 }
 
-// ─── Párrafo animado con ScrollTrigger ───────────────────────────────────────
+// ─── Párrafo animado ──────────────────────────────────────────────────────────
 function AnimParagraph({ children, from = "left", delay = 0 }) {
     const ref = useRef(null);
     useEffect(() => {
@@ -82,56 +82,59 @@ function AnimParagraph({ children, from = "left", delay = 0 }) {
         observer.observe(el);
         return () => observer.disconnect();
     }, [from, delay]);
-    return <p ref={ref} className="text-lg md:text-xl text-slate-300 leading-relaxed" style={{ opacity: 0 }}>{children}</p>;
+    return (
+        <p ref={ref} className="text-base sm:text-lg md:text-xl text-slate-300 leading-relaxed" style={{ opacity: 0 }}>
+            {children}
+        </p>
+    );
 }
 
-// ─── Contenedor de categoría de skills animado ───────────────────────────────
+// ─── Grupo de skills animado ──────────────────────────────────────────────────
 function SkillGroup({ skillGroup, index }) {
     const groupRef = useRef(null);
     const itemsRef = useRef([]);
 
     useEffect(() => {
-    const el = groupRef.current;
-    const observer = new IntersectionObserver(([entry]) => {
-        if (!entry.isIntersecting) return;
-        observer.disconnect();
-
-        gsap.fromTo(el,
-            { opacity: 0, y: 50, scale: 0.97 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.7, delay: index * 0.12, ease: "power3.out" }
-        );
-        gsap.fromTo(itemsRef.current,
-            { opacity: 0, y: 20, scale: 0.9 },
-            {
-                opacity: 1, y: 0, scale: 1,
-                duration: 0.4,
-                stagger: 0.05,
-                delay: index * 0.12 + 0.15,
-                ease: "back.out(1.3)"
-            }
-        );
-    }, { threshold: 0.15 });
-    observer.observe(el);
-    return () => observer.disconnect();
-}, [index]);
+        const el = groupRef.current;
+        const observer = new IntersectionObserver(([entry]) => {
+            if (!entry.isIntersecting) return;
+            observer.disconnect();
+            gsap.fromTo(el,
+                { opacity: 0, y: 50, scale: 0.97 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.7, delay: index * 0.12, ease: "power3.out" }
+            );
+            gsap.fromTo(itemsRef.current,
+                { opacity: 0, y: 20, scale: 0.9 },
+                {
+                    opacity: 1, y: 0, scale: 1,
+                    duration: 0.4,
+                    stagger: 0.05,
+                    delay: index * 0.12 + 0.15,
+                    ease: "back.out(1.3)"
+                }
+            );
+        }, { threshold: 0.15 });
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [index]);
 
     return (
         <div
             ref={groupRef}
-            className="flex-1 min-w-0 rounded-3xl bg-slate-900/50 border border-slate-800 p-6 backdrop-blur-md opacity-0"
+            className="flex-1 min-w-0 rounded-3xl bg-slate-900/50 border border-slate-800 p-4 sm:p-6 backdrop-blur-md opacity-0"
         >
-            <h3 className="text-2xl font-bold text-center text-white mb-8 tracking-wide">
+            <h3 className="text-xl sm:text-2xl font-bold text-center text-white mb-6 sm:mb-8 tracking-wide">
                 {skillGroup.category}
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
                 {skillGroup.items.map((item, i) => (
                     <div
                         key={item.name}
                         ref={el => itemsRef.current[i] = el}
-                        className={"flex flex-col items-center justify-center gap-3 p-5 rounded-2xl bg-slate-800/40 border border-slate-700 backdrop-blur-md hover:bg-slate-700/40 hover:-translate-y-2 hover:shadow-lg transition-all duration-300 cursor-pointer opacity-0 " + statusBorders[item.status] + " " + statusGlow[item.status]}
+                        className={"flex flex-col items-center justify-center gap-2 sm:gap-3 p-3 sm:p-5 rounded-2xl bg-slate-800/40 border border-slate-700 backdrop-blur-md hover:bg-slate-700/40 hover:-translate-y-2 hover:shadow-lg transition-all duration-300 cursor-pointer opacity-0 " + statusBorders[item.status] + " " + statusGlow[item.status]}
                     >
-                        <item.icon className={"text-5xl " + statusColors[item.status]} />
-                        <span className="text-sm md:text-base font-medium text-center text-slate-200 ">
+                        <item.icon className={"text-4xl sm:text-5xl " + statusColors[item.status]} />
+                        <span className="text-xs sm:text-sm md:text-base font-medium text-center text-slate-200">
                             {item.name}
                         </span>
                     </div>
@@ -143,14 +146,13 @@ function SkillGroup({ skillGroup, index }) {
 
 // ─── Componente principal ─────────────────────────────────────────────────────
 function About() {
-    const particlesRef  = useRef([]);
-    const titleRef      = useRef(null);
-    const subtitleRef   = useRef(null);
-    const btnRef        = useRef(null);
-    const legendRef     = useRef(null);
+    const particlesRef   = useRef([]);
+    const titleRef       = useRef(null);
+    const subtitleRef    = useRef(null);
+    const btnRef         = useRef(null);
+    const legendRef      = useRef(null);
     const skillsTitleRef = useRef(null);
 
-    // Partículas y blobs
     const particles = Array.from({ length: 18 }, (_, i) => ({
         w:       (Math.random() * 3 + 1).toFixed(1) + "px",
         h:       (Math.random() * 3 + 1).toFixed(1) + "px",
@@ -178,13 +180,11 @@ function About() {
         });
     }, []);
 
-    // Animación del título "SOBRE MÍ"
     useEffect(() => {
         const el = titleRef.current;
         const observer = new IntersectionObserver(([entry]) => {
             if (!entry.isIntersecting) return;
             observer.disconnect();
-
             gsap.fromTo(el,
                 { opacity: 0, y: 60, scale: 0.9 },
                 { opacity: 1, y: 0, scale: 1, duration: 1, ease: "power3.out" }
@@ -202,7 +202,6 @@ function About() {
         return () => observer.disconnect();
     }, []);
 
-    // Animación de la leyenda y título de skills
     useEffect(() => {
         const targets = [skillsTitleRef.current, legendRef.current];
         targets.forEach((el, i) => {
@@ -220,15 +219,15 @@ function About() {
 
     return (
         <>
-        {/* ═══ SECCIÓN SOBRE MÍ ═══════════════════════════════════════════════ */}
-        <section className="relative overflow-hidden py-24 px-6" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 0%, #0a1628 0%, #080c14 70%)" }}>
+        {/* ═══ SECCIÓN SOBRE MÍ ════════════════════════════════════════════ */}
+        <section className="relative overflow-hidden py-20 sm:py-24 px-4 sm:px-6" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 0%, #0a1628 0%, #080c14 70%)" }}>
 
             <WaveCanvas speed={0.0001} />
 
             {/* Blobs */}
-            <div className="blob-about-1 absolute w-175 h-175 rounded-full bg-cyan-500/15 blur-[180px] -z-10" />
-            <div className="blob-about-2 absolute w-225 h-225 rounded-full bg-blue-600/15 blur-[180px] -z-10" />
-            <div className="blob-about-3 absolute w-150 h-150 rounded-full bg-sky-400/15 blur-[180px] -z-10" />
+            <div className="blob-about-1 absolute w-96 h-96 md:w-175 md:h-175 rounded-full bg-cyan-500/15 blur-[180px] -z-10" />
+            <div className="blob-about-2 absolute w-120 h-120 md:w-225 md:h-225 rounded-full bg-blue-600/15 blur-[180px] -z-10" />
+            <div className="blob-about-3 absolute w-80 h-80 md:w-150 md:h-150 rounded-full bg-sky-400/15 blur-[180px] -z-10" />
 
             {/* Partículas */}
             {particles.map((p, i) => (
@@ -241,17 +240,16 @@ function About() {
             <div className="relative z-10 max-w-4xl mx-auto">
 
                 {/* Título */}
-                <div className="text-center mb-16">
-                    <p className="uppercase tracking-[6px] text-cyan-400 text-sm font-medium mb-4">
+                <div className="text-center mb-12 sm:mb-16">
+                    <p className="uppercase tracking-[6px] text-cyan-400 text-xs sm:text-sm font-medium mb-4">
                         Quién soy
                     </p>
                     <h2
                         ref={titleRef}
-                        className="text-6xl sm:text-7xl md:text-8xl font-black text-white tracking-tight leading-none mb-6"
+                        className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white tracking-tight leading-none mb-6"
                     >
                         SOBRE MÍ
                     </h2>
-                    {/* Línea decorativa */}
                     <div
                         ref={subtitleRef}
                         className="mx-auto h-px w-48 opacity-0"
@@ -259,31 +257,28 @@ function About() {
                     />
                 </div>
 
-                {/* Párrafos alternados izquierda / derecha */}
-                <div className="space-y-10 mb-16">
+                {/* Párrafos */}
+                <div className="space-y-8 sm:space-y-10 mb-12 sm:mb-16">
                     <AnimParagraph from="left" delay={0}>
                         Soy <strong className="text-white font-semibold">Leonel López</strong>, desarrollador Full-Stack en formación. Combino el aprendizaje formal con la exploración autodidacta — si una tecnología me interesa, no espero a que aparezca en un programa de estudios para empezar a probarla.
                     </AnimParagraph>
-
                     <AnimParagraph from="right" delay={0.05}>
                         Actualmente curso bachillerato tecnológico en Tecnologías de la Información, donde construyo las bases técnicas que después profundizo por mi cuenta en proyectos reales como este portfolio y otra variedad de proyectos.
                     </AnimParagraph>
-
                     <AnimParagraph from="left" delay={0.05}>
                         Mi próximo paso técnico es sumar <strong className="text-cyan-400">Next.js</strong>, <strong className="text-cyan-400">TypeScript</strong>, <strong className="text-cyan-400">PHP</strong> y <strong className="text-cyan-400">Nest.js</strong> a mi stack. Y al terminar la carrera este año, planeo continuar con un Tecnólogo en Ciberseguridad.
                     </AnimParagraph>
-
                     <AnimParagraph from="right" delay={0.05}>
                         Si buscás un desarrollador que se involucra de verdad con lo que construye, en la sección de proyectos podés ver ese enfoque aplicado.
                     </AnimParagraph>
                 </div>
 
-                {/* Botón */}
+                {/* Botón → scroll a #skills dentro de la misma página */}
                 <div className="flex justify-center">
                     <a
                         ref={btnRef}
                         href="#skills"
-                        className="opacity-0 inline-flex items-center gap-3 px-8 py-3 rounded-xl border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black font-semibold transition-all duration-300 hover:-translate-y-1"
+                        className="opacity-0 inline-flex items-center gap-3 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black font-semibold transition-all duration-300 hover:-translate-y-1 text-sm sm:text-base"
                     >
                         Ver tecnologías
                         <FaArrowDown />
@@ -293,13 +288,13 @@ function About() {
             </div>
         </section>
 
-        {/* ═══ SECCIÓN SKILLS ══════════════════════════════════════════════════ */}
+        {/* ═══ SECCIÓN SKILLS ══════════════════════════════════════════════ */}
         <section
             id="skills"
-            className="relative overflow-hidden py-24 px-6"
+            className="relative overflow-hidden py-20 sm:py-24 px-4 sm:px-6"
             style={{ background: "linear-gradient(180deg, #080c14 0%, #050d1a 40%, #03080f 100%)" }}
         >
-            {/* Fondo diferenciado: grid + viñeta */}
+            {/* Grid de fondo */}
             <div className="absolute inset-0 pointer-events-none" style={{
                 backgroundImage: "linear-gradient(rgba(34,211,238,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.04) 1px, transparent 1px)",
                 backgroundSize: "48px 48px"
@@ -307,51 +302,52 @@ function About() {
             <div className="absolute inset-0 pointer-events-none" style={{
                 background: "radial-gradient(ellipse 70% 50% at 50% 50%, transparent 40%, #03080f 100%)"
             }} />
-            {/* Línea separadora superior */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 pointer-events-none" style={{ background: "linear-gradient(to bottom, #22d3ee44, transparent)" }} />
             <div className="absolute top-0 left-0 right-0 h-px pointer-events-none" style={{ background: "linear-gradient(90deg, transparent, rgba(34,211,238,0.3), transparent)" }} />
 
             <div className="relative z-10 max-w-7xl mx-auto">
 
                 {/* Título skills */}
-                <div className="flex flex-col items-center mb-12">
-                    <p 
+                <div className="flex flex-col items-center mb-10 sm:mb-12">
+                    <p
                         ref={skillsTitleRef}
-                        className="uppercase tracking-[6px] text-cyan-400 text-2xl font-medium mb-3">Stack técnico</p>
-                    
+                        className="uppercase tracking-[6px] text-cyan-400 text-xl sm:text-2xl font-medium mb-3"
+                    >
+                        Stack técnico
+                    </p>
 
                     {/* Leyenda */}
                     <div
                         ref={legendRef}
-                        className="flex flex-wrap justify-center gap-6 px-8 py-4 mb-6 rounded-2xl bg-slate-900/60 border border-slate-700/60 backdrop-blur-md opacity-0"
+                        className="flex flex-wrap justify-center gap-4 sm:gap-6 px-5 sm:px-8 py-3 sm:py-4 mb-6 rounded-2xl bg-slate-900/60 border border-slate-700/60 backdrop-blur-md opacity-0"
                     >
                         <div className="flex items-center gap-2">
                             <div className="w-2.5 h-2.5 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]" />
-                            <span className="text-slate-300 text-sm">Sabido</span>
+                            <span className="text-slate-300 text-xs sm:text-sm">Sabido</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <div className="w-2.5 h-2.5 rounded-full bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.6)]" />
-                            <span className="text-slate-300 text-sm">Aprendiendo</span>
+                            <span className="text-slate-300 text-xs sm:text-sm">Aprendiendo</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <div className="w-2.5 h-2.5 rounded-full bg-violet-400 shadow-[0_0_8px_rgba(167,139,250,0.6)]" />
-                            <span className="text-slate-300 text-sm">Futuro</span>
+                            <span className="text-slate-300 text-xs sm:text-sm">Futuro</span>
                         </div>
                     </div>
                 </div>
 
-                {/* Grid de categorías */}
-                <div className="flex flex-col lg:flex-row gap-8">
+                {/* Grid de categorías: columna en móvil, fila en lg */}
+                <div className="flex flex-col lg:flex-row gap-6 sm:gap-8">
                     {Skills.map((skillGroup, index) => (
                         <SkillGroup key={skillGroup.category} skillGroup={skillGroup} index={index} />
                     ))}
                 </div>
 
-                {/* Botón proyectos */}
-                <div className="flex justify-center mt-14">
+                {/* Botón proyectos → ScrollToTop se encarga */}
+                <div className="flex justify-center mt-10 sm:mt-14">
                     <Link
                         to="/projects"
-                        className="inline-flex items-center justify-center gap-3 px-8 py-3 rounded-xl border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black font-semibold transition-all duration-300 hover:translate-1"
+                        className="inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black font-semibold transition-all duration-300 hover:-translate-y-1 text-sm sm:text-base"
                     >
                         Ver proyectos
                         <FaArrowRight />

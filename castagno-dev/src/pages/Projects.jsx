@@ -20,7 +20,6 @@ function ProjectCard({ data, side, onExpand, isExpanded }) {
     const cardRef = useRef(null);
     const isLeft  = side === "left";
 
-    // Tilt 3D con el mouse
     const handleMouseMove = useCallback((e) => {
         if (isExpanded) return;
         const rect = cardRef.current.getBoundingClientRect();
@@ -40,7 +39,6 @@ function ProjectCard({ data, side, onExpand, isExpanded }) {
         });
     }, [isExpanded, isLeft]);
 
-    // Entrada desde el lado correcto
     useEffect(() => {
         const el = cardRef.current;
         gsap.set(el, { opacity: 0, x: isLeft ? -70 : 70, rotateY: isLeft ? -8 : 8, transformPerspective: 900 });
@@ -53,7 +51,6 @@ function ProjectCard({ data, side, onExpand, isExpanded }) {
         return () => observer.disconnect();
     }, [isLeft]);
 
-    // Enderezar al expandir, inclinar al cerrar
     useEffect(() => {
         gsap.to(cardRef.current, {
             rotateY: isExpanded ? 0 : (isLeft ? -8 : 8),
@@ -74,7 +71,7 @@ function ProjectCard({ data, side, onExpand, isExpanded }) {
             style={{ transformStyle: "preserve-3d", willChange: "transform" }}
         >
             <div
-                className="rounded-2xl p-6 h-full flex flex-col border transition-colors duration-300"
+                className="rounded-2xl p-4 sm:p-6 h-full flex flex-col border transition-colors duration-300"
                 style={{
                     background: "rgba(15, 23, 42, 0.6)",
                     backdropFilter: "blur(16px)",
@@ -87,21 +84,21 @@ function ProjectCard({ data, side, onExpand, isExpanded }) {
             >
                 {/* Header */}
                 <div className="flex justify-between items-start mb-3 gap-3">
-                    <h3 className="text-xl font-bold text-white leading-tight">{data.name}</h3>
+                    <h3 className="text-lg sm:text-xl font-bold text-white leading-tight">{data.name}</h3>
                     <span className={"shrink-0 px-2.5 py-0.5 rounded-full text-xs font-medium border " + st.bg + " " + st.text + " " + st.border}>
                         {data.status}
                     </span>
                 </div>
 
-                <p className="text-xs uppercase tracking-widest text-cyan-400/60 mb-4">{data.type}</p>
+                <p className="text-xs uppercase tracking-widest text-cyan-400/60 mb-3 sm:mb-4">{data.type}</p>
 
-                <div className="flex flex-wrap gap-3 text-2xl mb-4">
+                <div className="flex flex-wrap gap-2 sm:gap-3 text-xl sm:text-2xl mb-3 sm:mb-4">
                     {data.icon.map((Icon, i) => (
                         <Icon key={i} className="text-slate-300 transition-transform duration-200 hover:scale-125" />
                     ))}
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 mb-4">
+                <div className="flex flex-wrap gap-1.5 mb-3 sm:mb-4">
                     {data.technologies.map((tech) => (
                         <span key={tech} className="px-2 py-0.5 text-xs rounded-md text-slate-400 border border-white/8"
                             style={{ background: "rgba(255,255,255,0.04)" }}>
@@ -137,7 +134,7 @@ function DetailPanel({ data, side }) {
     return (
         <div
             ref={panelRef}
-            className="h-full rounded-2xl border p-6 flex flex-col gap-4"
+            className="h-full rounded-2xl border p-4 sm:p-6 flex flex-col gap-4"
             style={{
                 background: "rgba(8, 12, 20, 0.3)",
                 backdropFilter: "blur(24px)",
@@ -175,32 +172,30 @@ function DetailPanel({ data, side }) {
 // ─── Fila de proyecto ─────────────────────────────────────────────────────────
 function ProjectRow({ data, index, expandedName, onExpand }) {
     const isLeft     = index % 2 === 0;
-    const side       = isLeft ? "left" : "right";
     const isExpanded = expandedName === data.name;
 
-    // Card siempre en col-1 si isLeft, col-2 si isRight
-    // Panel aparece en la columna opuesta cuando está expandido
     return (
         <div style={{ perspective: "1200px" }}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+            {/* En móvil: siempre columna única. En md+: grid 2 col con panel alterno */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 items-stretch">
 
                 {isLeft ? (
                     <>
-                        {/* Par: card izquierda, panel derecha */}
                         <div>
                             <ProjectCard data={data} side="left" onExpand={onExpand} isExpanded={isExpanded} />
                         </div>
+                        {/* Panel solo visible si expandido; en móvil debajo de la card */}
                         <div className={isExpanded ? "" : "hidden md:block"}>
                             {isExpanded && <DetailPanel data={data} side="left" />}
                         </div>
                     </>
                 ) : (
                     <>
-                        {/* Impar: panel izquierda, card derecha */}
-                        <div className={isExpanded ? "" : "hidden md:block"}>
+                        {/* En móvil, el panel va antes de la card para mantener orden visual */}
+                        <div className={isExpanded ? "order-2 md:order-1" : "hidden md:block"}>
                             {isExpanded && <DetailPanel data={data} side="right" />}
                         </div>
-                        <div>
+                        <div className="order-1 md:order-2">
                             <ProjectCard data={data} side="right" onExpand={onExpand} isExpanded={isExpanded} />
                         </div>
                     </>
@@ -232,7 +227,6 @@ function Projects() {
 
     const toggleExpand = (name) => setExpandedName(prev => prev === name ? null : name);
 
-    // Título con SplitText
     useEffect(() => {
         const el = titleRef.current;
         if (!el) return;
@@ -270,24 +264,24 @@ function Projects() {
         return () => observer.disconnect();
     }, []);
 
-    const selectClass = "border rounded-xl px-4 py-2 text-slate-200 text-sm focus:outline-none focus:border-cyan-500/50 transition-colors duration-200 cursor-pointer";
+    const selectClass = "border rounded-xl px-3 sm:px-4 py-2 text-slate-200 text-sm focus:outline-none focus:border-cyan-500/50 transition-colors duration-200 cursor-pointer w-full sm:w-auto";
     const selectStyle = { background: "rgba(15,23,42,0.7)", backdropFilter: "blur(12px)", borderColor: "rgba(100,116,139,0.25)" };
 
     return (
         <section
             id="projects"
-            className="relative w-full min-h-screen py-28 px-6 overflow-hidden"
+            className="relative w-full min-h-screen py-24 sm:py-28 px-4 sm:px-6 overflow-hidden"
             style={{ background: "radial-gradient(ellipse 80% 50% at 50% 0%, #0a1628 0%, #080c14 60%)" }}
         >
 
             <div className="relative z-10 max-w-5xl mx-auto">
 
                 {/* Título */}
-                <div className="text-center mb-16">
+                <div className="text-center mb-12 sm:mb-16">
                     <p className="uppercase tracking-[6px] text-cyan-400 text-xs font-medium mb-4">Lo que construí</p>
                     <h2
                         ref={titleRef}
-                        className="text-6xl sm:text-7xl md:text-8xl font-black text-white tracking-tight leading-none mb-6"
+                        className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white tracking-tight leading-none mb-6"
                         style={{ transformStyle: "preserve-3d" }}
                     >
                         PROYECTOS
@@ -297,7 +291,7 @@ function Projects() {
                 </div>
 
                 {/* Filtros */}
-                <div ref={filtersRef} className="flex flex-col sm:flex-row justify-center items-center gap-3 mb-16 opacity-0">
+                <div ref={filtersRef} className="flex flex-col sm:flex-row justify-center items-center gap-3 mb-12 sm:mb-16 opacity-0">
                     <select value={filtroTipo} onChange={e => setFiltroTipo(e.target.value)} className={selectClass} style={selectStyle}>
                         {tipos.map(t => <option key={t} value={t}>{t}</option>)}
                     </select>
@@ -307,7 +301,7 @@ function Projects() {
                 </div>
 
                 {/* Proyectos */}
-                <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-6 sm:gap-8">
                     {proyectosFiltrados.map((data, index) => (
                         <ProjectRow
                             key={data.name}
@@ -323,11 +317,12 @@ function Projects() {
                         </p>
                     )}
                 </div>
-                    {/* Botón proyectos */}
-                <div className="flex justify-center mt-14">
+
+                {/* Botón contactame → ScrollToTop se encarga */}
+                <div className="flex justify-center mt-10 sm:mt-14">
                     <Link
                         to="/contact"
-                        className="inline-flex items-center justify-center gap-3 px-8 py-3 rounded-xl border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black font-semibold transition-all duration-300 hover:translate-1"
+                        className="inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black font-semibold transition-all duration-300 hover:-translate-y-1 text-sm sm:text-base"
                     >
                         Contactame
                         <FaArrowRight />

@@ -18,7 +18,7 @@ const socials = [
 
 function Footer() {
     return (
-        <footer className="relative overflow-hidden pt-16 pb-8 px-6"
+        <footer className="relative overflow-hidden pt-12 sm:pt-16 pb-6 sm:pb-8 px-4 sm:px-6"
             style={{ background: "linear-gradient(180deg, #080c14 0%, #050810 100%)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
 
             {/* Línea superior con glow */}
@@ -27,18 +27,17 @@ function Footer() {
 
             <div className="max-w-5xl mx-auto">
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-12 mb-10 sm:mb-12">
 
                     {/* Marca */}
-                    <div className="flex flex-col gap-4">
-                        <h2 className="text-xl font-black text-white tracking-widest uppercase"
+                    <div className="flex flex-col gap-4 sm:col-span-2 md:col-span-1">
+                        <h2 className="text-lg sm:text-xl font-black text-white tracking-widest uppercase"
                             style={{ textShadow: "0 0 20px rgba(34,211,238,0.3)" }}>
                             {"{ Castagno Dev }"}
                         </h2>
                         <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
                             Desarrollador Full-Stack construyendo aplicaciones web modernas con foco en rendimiento y diseño.
                         </p>
-                        {/* Indicador disponibilidad */}
                         <div className="flex items-center gap-2 mt-1">
                             <span className="relative flex h-2 w-2">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-60" />
@@ -48,8 +47,8 @@ function Footer() {
                         </div>
                     </div>
 
-                    {/* Navegación */}
-                    <div className="flex flex-col gap-3">
+                    {/* Navegación — los Link + ScrollToTop llevan arriba automáticamente */}
+                    <div className="flex flex-col gap-2 sm:gap-3">
                         <p className="text-xs uppercase tracking-widest text-slate-600 mb-1">Páginas</p>
                         {links.map(l => (
                             <Link key={l.path} to={l.path}
@@ -59,7 +58,7 @@ function Footer() {
                         ))}
                     </div>
 
-                    {/* Contacto + redes */}
+                    {/* Redes */}
                     <div className="flex flex-col gap-4">
                         <p className="text-xs uppercase tracking-widest text-slate-600 mb-1">Redes</p>
                         <div className="flex gap-3">
@@ -80,13 +79,14 @@ function Footer() {
                 </div>
 
                 {/* Divisor */}
-                <div className="h-px w-full mb-6" style={{ background: "rgba(255,255,255,0.04)" }} />
+                <div className="h-px w-full mb-5 sm:mb-6" style={{ background: "rgba(255,255,255,0.04)" }} />
 
                 {/* Copyright */}
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
                     <p className="text-slate-600 text-xs">© 2026 Castagno Dev · Leonel López</p>
-                    <p className="text-slate-700 text-xs">Hecho con garra charrúa   ·   <span class="fi fi-uy"></span></p>
-                    
+                    <p className="text-slate-700 text-xs flex items-center gap-1">
+                        Hecho con garra charrúa · <span className="fi fi-uy"></span>
+                    </p>
                 </div>
 
             </div>

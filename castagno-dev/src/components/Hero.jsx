@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { TfiLocationPin } from "react-icons/tfi";
 import { FiGithub, FiLinkedin, FiInstagram } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import me from '../assets/me.jpg';
 import '../index.css';
 import gsap from 'gsap';
@@ -25,11 +26,10 @@ function WaveCanvas() {
         resize();
         window.addEventListener("resize", resize);
 
-        // Configuración de líneas
-        const LINES       = 14;       // cantidad de ondas
-        const LINE_WIDTH  = 1.8;      // px
-        const COLOR       = "rgba(34,211,238,"; // cyan-400 base
-        const SPEED       = 0.0001;   // velocidad del loop
+        const LINES       = 14;
+        const LINE_WIDTH  = 1.8;
+        const COLOR       = "rgba(34,211,238,";
+        const SPEED       = 0.0001;
 
         const draw = () => {
             const W = canvas.width;
@@ -37,10 +37,8 @@ function WaveCanvas() {
             ctx.clearRect(0, 0, W, H);
 
             for (let l = 0; l < LINES; l++) {
-                const progress = l / (LINES - 1);               // 0..1
-                // cada onda ocupa una franja vertical del canvas
+                const progress = l / (LINES - 1);
                 const baseY    = H * 0.15 + progress * H * 0.7;
-                // opacidad más alta en el centro, se desvanece en bordes
                 const alpha    = 0.08 + 0.22 * Math.sin(Math.PI * progress);
 
                 ctx.beginPath();
@@ -50,7 +48,6 @@ function WaveCanvas() {
                 const STEPS = 180;
                 for (let s = 0; s <= STEPS; s++) {
                     const x = (s / STEPS) * W;
-                    // Superponer varias frecuencias por línea
                     const y = baseY
                         + Math.sin(s * 0.045 + t + l * 0.5)          * 22
                         + Math.sin(s * 0.022 + t * 1.3 + l * 0.9)    * 14
@@ -61,7 +58,7 @@ function WaveCanvas() {
                 ctx.stroke();
             }
 
-            t += SPEED * 60; // normalizar a 60fps
+            t += SPEED * 60;
             animId = requestAnimationFrame(draw);
         };
 
@@ -80,7 +77,6 @@ function WaveCanvas() {
         />
     );
 }
-// ─────────────────────────────────────────────────────────────────────────────
 
 function Hero() {
     const [opened, setOpened] = useState(false);
@@ -171,16 +167,20 @@ function Hero() {
 
         gsap.killTweensOf([leftBracket.current, rightBracket.current]);
 
+        const isMobile = window.innerWidth < 768;
+        const expandX  = isMobile ? 220 : 550;
+        const collapseX = isMobile ? 200 : 530;
+
         const tl = gsap.timeline({ onComplete: () => setShowContent(true) });
 
-        tl.to(leftBracket.current,  { x: -80,  scale: 1.8, rotation: -20, duration: 0.5, ease: "power4.out" }, 0);
-        tl.to(rightBracket.current, { x:  80,  scale: 1.8, rotation:  20, duration: 0.5, ease: "power4.out" }, 0);
+        tl.to(leftBracket.current,  { x: -80,      scale: 1.8, rotation: -20, duration: 0.5, ease: "power4.out" }, 0);
+        tl.to(rightBracket.current, { x:  80,       scale: 1.8, rotation:  20, duration: 0.5, ease: "power4.out" }, 0);
 
-        tl.to(leftBracket.current,  { x: -550, duration: 0.8, ease: "power3.out" }, 0.4);
-        tl.to(rightBracket.current, { x:  550, duration: 0.8, ease: "power3.out" }, 0.4);
+        tl.to(leftBracket.current,  { x: -expandX,  duration: 0.8, ease: "power3.out" }, 0.4);
+        tl.to(rightBracket.current, { x:  expandX,  duration: 0.8, ease: "power3.out" }, 0.4);
 
-        tl.to(leftBracket.current,  { x: -530, y: -10, rotation: 0, scale: 1.1, duration: 1.2, ease: "power4.inOut" }, 1.3);
-        tl.to(rightBracket.current, { x:  530, y: -10, rotation: 0, scale: 1.1, duration: 1.2, ease: "power4.inOut" }, 1.3);
+        tl.to(leftBracket.current,  { x: -collapseX, y: -10, rotation: 0, scale: 1.1, duration: 1.2, ease: "power4.inOut" }, 1.3);
+        tl.to(rightBracket.current, { x:  collapseX, y: -10, rotation: 0, scale: 1.1, duration: 1.2, ease: "power4.inOut" }, 1.3);
 
         tl.to(clickRef.current,  { opacity: 0, duration: 0.3 }, 0);
         tl.to(glowRef.current,   { opacity: 0, scale: 0, duration: 0.3 }, 0);
@@ -191,6 +191,10 @@ function Hero() {
         if (!showContent) return;
 
         const split = new SplitText(brandRef.current, { type: "chars" });
+        const isMobile = window.innerWidth < 768;
+        const collapseX = isMobile ? 130 : 330;
+        const collapseY = isMobile ? -280 : -250;
+
         const tl = gsap.timeline();
 
         tl.to(brandRef.current,  { y: 120, opacity: 1, duration: 0 }, 0);
@@ -198,11 +202,11 @@ function Hero() {
 
         tl.from(photoRef.current, { opacity: 0, scale: 0.4, rotate: -20, duration: 1, ease: "back.out(2)" }, 0.2);
         tl.from(effectPhotoRef.current, { opacity: 0, scale: 0.4, rotate: -20, duration: 1, ease: "back.out(2)" }, 0.2);
-        tl.from(textRef.current,  { opacity: 0, x: 60, duration: 0.9, ease: "power4.out" }, 0.4);
+        tl.from(textRef.current,  { opacity: 0, x: isMobile ? 0 : 60, y: isMobile ? 30 : 0, duration: 0.9, ease: "power4.out" }, 0.4);
         tl.from(buttonsRef.current.children, { opacity: 1, y: 30, stagger: 0.08, duration: 0.5 }, 0.6);
 
-        tl.to(leftBracket.current,  { x: -320, y: -250, rotation: 0, scale: 0.6, duration: 1.2, ease: "power4.inOut" }, 0.7);
-        tl.to(rightBracket.current, { x:  320, y: -250, rotation: 0, scale: 0.6, duration: 1.2, ease: "power4.inOut" }, 0.7);
+        tl.to(leftBracket.current,  { x: -collapseX, y: collapseY, rotation: 0, scale: 0.6, duration: 1.2, ease: "power4.inOut" }, 0.7);
+        tl.to(rightBracket.current, { x:  collapseX, y: collapseY, rotation: 0, scale: 0.6, duration: 1.2, ease: "power4.inOut" }, 0.7);
 
         const glowAnim = (target) => gsap.to(target, {
             textShadow: "0 0 20px #22d3ee, 0 0 50px #22d3ee, 0 0 90px #22d3ee",
@@ -219,16 +223,15 @@ function Hero() {
     return (
         <section
             onClick={!opened ? handleOpen : undefined}
-            className="relative flex items-center justify-center overflow-hidden min-h-screen text-white px-6"
+            className="relative flex items-center justify-center overflow-hidden min-h-screen text-white px-4 sm:px-6"
             style={{ background: "radial-gradient(ellipse 80% 60% at 50% 50%, #0a1628 0%, #080c14 70%)" }}
         >
-            {/* Ondas topográficas animadas */}
             <WaveCanvas />
 
             {/* Blobs */}
-            <div className="blob blob-1 absolute w-175 h-175 rounded-full bg-cyan-500/20 blur-[180px] -z-10" />
-            <div className="blob blob-2 absolute w-225 h-225 rounded-full bg-blue-600/20 blur-[180px] -z-10" />
-            <div className="blob blob-3 absolute w-150 h-150 rounded-full bg-sky-400/20 blur-[180px] -z-10" />
+            <div className="blob blob-1 absolute w-96 h-96 md:w-175 md:h-175 rounded-full bg-cyan-500/20 blur-[180px] -z-10" />
+            <div className="blob blob-2 absolute w-120 h-120 md:w-225 md:h-225 rounded-full bg-blue-600/20 blur-[180px] -z-10" />
+            <div className="blob blob-3 absolute w-80 h-80 md:w-150 md:h-150 rounded-full bg-sky-400/20 blur-[180px] -z-10" />
 
             {/* Partículas */}
             {Array.from({ length: 18 }).map((_, i) => (
@@ -248,10 +251,10 @@ function Hero() {
                 />
             ))}
 
-            {/* Corchetes — siempre en el DOM */}
+            {/* Corchetes */}
             <div className={`absolute inset-0 flex items-center justify-center pointer-events-none ${opened ? '' : 'cursor-pointer'}`} style={{ zIndex: 2 }}>
-                <span ref={leftBracket}  className="text-8xl md:text-[12rem] font-semibold select-none" style={{ textShadow: "0 0 40px rgba(34,211,238,0.8)" }}>{"{"}  </span>
-                <span ref={rightBracket} className="text-8xl md:text-[12rem] font-semibold select-none" style={{ textShadow: "0 0 40px rgba(34,211,238,0.8)" }}>{" }"}</span>
+                <span ref={leftBracket}  className="text-7xl sm:text-8xl md:text-[12rem] font-semibold select-none" style={{ textShadow: "0 0 40px rgba(34,211,238,0.8)" }}>{"{"}  </span>
+                <span ref={rightBracket} className="text-7xl sm:text-8xl md:text-[12rem] font-semibold select-none" style={{ textShadow: "0 0 40px rgba(34,211,238,0.8)" }}>{" }"}</span>
             </div>
 
             {/* Estado inicial */}
@@ -267,7 +270,7 @@ function Hero() {
                     <div style={{ height: "18rem" }} />
                     <p
                         ref={clickRef}
-                        className="mt-8 text-xl md:text-2xl font-semibold tracking-wider text-white"
+                        className="mt-8 text-lg sm:text-xl md:text-2xl font-semibold tracking-wider text-white text-center px-4"
                         style={{ textShadow: "0 0 12px rgba(34,211,238,0.8)" }}
                     >
                         Haz clic para descubrir más
@@ -278,20 +281,20 @@ function Hero() {
             {/* Estado expandido */}
             {showContent && (
                 <div className="max-w-5xl w-full" style={{ zIndex: 3 }}>
-                    <div className="absolute top-16 left-1/2 -translate-x-1/2 text-center">
+                    <div className="absolute top-12 sm:top-16 left-1/2 -translate-x-1/2 text-center w-full px-4">
                         <h1
                             ref={brandRef}
-                            className="text-5xl md:text-7xl font-medium uppercase tracking-widest text-white opacity-0 whitespace-nowrap"
+                            className="text-3xl sm:text-5xl md:text-7xl font-medium uppercase tracking-widest text-white opacity-0 whitespace-nowrap"
                         >
                             Castagno Dev
                         </h1>
                     </div>
 
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-14 mt-8">
-                        {/* Foto — clip octagonal */}
-                        <div className="relative shrink-0 w-65 h-90">
+                    {/* Foto + texto: columna en móvil, fila en md+ */}
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-14 mt-20 sm:mt-8 px-2">
 
-                            {/* Borde diagonal en cyan */}
+                        {/* Foto */}
+                        <div className="relative shrink-0 w-44 h-60 sm:w-52 sm:h-72 md:w-65 md:h-90">
                             <div
                                 ref={effectPhotoRef}
                                 className="absolute inset-0 pointer-events-none z-10"
@@ -300,7 +303,6 @@ function Hero() {
                                     background: "linear-gradient(135deg, rgba(34,211,238,0.5) 0%, transparent 20%, transparent 40%, rgba(34,211,238,0.2) 100%)"
                                 }}
                             />
-
                             <img
                                 ref={photoRef}
                                 src={me}
@@ -311,37 +313,42 @@ function Hero() {
                                     filter: "brightness(0.9) saturate(0.85)"
                                 }}
                             />
-
                         </div>
-                        <div ref={textRef}>
-                            <p className="uppercase text-cyan-400 tracking-[4px] text-sm mb-4">
+
+                        {/* Texto */}
+                        <div ref={textRef} className="text-center md:text-left">
+                            <p className="uppercase text-cyan-400 tracking-[4px] text-xs sm:text-sm mb-3 sm:mb-4">
                                 Full-Stack Developer
                             </p>
-                            <p className="text-xl text-justify text-gray-300 leading-relaxed max-w-md">
+                            <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed max-w-md">
                                 ¡Hola! Mi nombre es <strong className="text-white">Leonel López</strong>.
                                 Soy estudiante de Bachillerato Tecnológico en Tecnologías de la Información y actualmente construyo aplicaciones web modernas con foco en rendimiento, diseño y código limpio. Bienvenido/a a mi portfolio.
                             </p>
-                            <div className="flex items-center gap-2 mt-6 text-gray-400">
+                            <div className="flex items-center justify-center md:justify-start gap-2 mt-4 sm:mt-6 text-gray-400 text-sm">
                                 <TfiLocationPin />
                                 <span>Buscando oportunidades · Remote / Híbrido · </span>
-                                <span class="fi fi-uy"></span>
+                                <span className="fi fi-uy"></span>
                             </div>
 
-                            <div ref={buttonsRef} className="flex items-center gap-4 mt-8">
-                                <button className="px-8 py-3 border border-cyan-400 rounded-2xl text-cyan-400 hover:bg-cyan-400 hover:text-black transition">
+                            <div ref={buttonsRef} className="flex flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-4 mt-6 sm:mt-8">
+                                {/* Botón "Sobre mí" → navega a /about y hace scroll al top */}
+                                <Link
+                                    to="/about"
+                                    className="px-6 sm:px-8 py-2.5 sm:py-3 border border-cyan-400 rounded-2xl text-cyan-400 hover:bg-cyan-400 hover:text-black transition text-sm sm:text-base"
+                                >
                                     Sobre mí
-                                </button>
+                                </Link>
                                 <a href="https://www.linkedin.com/in/leonel-lopez-5bb549306/" target="_blank" rel="noreferrer"
-                                    className="p-3 border border-cyan-400 rounded-2xl text-cyan-400 hover:bg-cyan-400 hover:text-black transition">
-                                    <FiLinkedin size={24} />
+                                    className="p-2.5 sm:p-3 border border-cyan-400 rounded-2xl text-cyan-400 hover:bg-cyan-400 hover:text-black transition">
+                                    <FiLinkedin size={20} />
                                 </a>
                                 <a href="https://github.com/LeonelLopez14" target="_blank" rel="noreferrer"
-                                    className="p-3 border border-cyan-400 rounded-2xl text-cyan-400 hover:bg-cyan-400 hover:text-black transition">
-                                    <FiGithub size={24} />
+                                    className="p-2.5 sm:p-3 border border-cyan-400 rounded-2xl text-cyan-400 hover:bg-cyan-400 hover:text-black transition">
+                                    <FiGithub size={20} />
                                 </a>
                                 <a href="https://instagram.com/castagno.dev" target="_blank" rel="noreferrer"
-                                    className="p-3 border border-cyan-400 rounded-2xl text-cyan-400 hover:bg-cyan-400 hover:text-black transition">
-                                    <FiInstagram size={24} />
+                                    className="p-2.5 sm:p-3 border border-cyan-400 rounded-2xl text-cyan-400 hover:bg-cyan-400 hover:text-black transition">
+                                    <FiInstagram size={20} />
                                 </a>
                             </div>
                         </div>
