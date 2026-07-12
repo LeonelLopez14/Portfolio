@@ -1,4 +1,4 @@
-import { SiReact, SiTailwindcss, SiJavascript, SiGsap, SiNextdotjs, SiSpringboot, SiSpringsecurity, SiHibernate, SiPhp, SiNestjs, SiTypescript, SiMysql, SiDocker, SiGithub, SiFigma, SiVite, SiPostman, SiSwagger, SiXampp } from "react-icons/si";
+import { SiReact, SiTailwindcss, SiJavascript, SiGsap, SiNextdotjs, SiSpringboot, SiSpringsecurity, SiHibernate, SiPhp, SiNestjs, SiTypescript, SiMysql, SiDocker, SiGithub, SiFigma, SiVite, SiPostman, SiSwagger, SiXampp, SiThreedotjs } from "react-icons/si";
 import { DiJava } from "react-icons/di";
 
 const ProjectsDetails = [
@@ -11,6 +11,17 @@ const ProjectsDetails = [
         type: 'Full-Stack',
         status: 'en desarrollo',
         github: 'https://github.com/LeonelLopez14/Competika.git',
+        deploy: null
+    },
+    {
+        name: 'Antua',
+        description: 'Ecommerce completo para ventas de galletas caseras.',
+        fullDescription: '... ',
+        technologies: ['JavaScript', 'React', 'Tailwind', 'Three.js', 'TypeScript', 'Nest.js', 'MySQL', 'GSAP', 'Vite', 'Docker', 'Swagger'],
+        icon: [ SiJavascript, SiReact, SiTailwindcss, SiThreedotjs, SiTypescript, SiNestjs, SiMysql, SiGsap, SiVite, SiDocker, SiSwagger],
+        type: 'Full-Stack',
+        status: 'en desarrollo',
+        github: 'https://github.com/LeonelLopez14/Antua-Ecommerce.git',
         deploy: null
     },
     {

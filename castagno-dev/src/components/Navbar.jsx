@@ -12,7 +12,7 @@ const navItems = [
 ];
 
 // Anchos por ítem (px) para desktop
-const TEXT_WIDTHS = [90, 105, 140, 130];
+const TEXT_WIDTHS = [90, 125, 140, 130];
 const ICON_WIDTH  = 36;
 
 function Navbar() {
@@ -26,10 +26,9 @@ function Navbar() {
 
     const [hovered,    setHovered]    = useState(false);
     const [scrolled,   setScrolled]   = useState(false);
-    const [menuOpenPath, setMenuOpenPath] = useState(null);
+    const [menuOpen, setMenuOpen] = useState(false);
     // El menú está abierto solo si el path activo coincide con cuando se abrió
-    const menuOpen = menuOpenPath === location.pathname;
-    const setMenuOpen = (val) => setMenuOpenPath(val ? location.pathname : null);
+
     const [isMobile,   setIsMobile]   = useState(false);
 
     // Detectar si es móvil
@@ -127,7 +126,7 @@ function Navbar() {
                         Castagno Dev
                     </span>
                     <button
-                        onClick={() => setMenuOpen(v => !v)}
+                        onClick={() => setMenuOpen(prev => !prev)}
                         className="text-white p-1 rounded-lg transition-colors"
                         aria-label="Toggle menu"
                     >
@@ -156,6 +155,7 @@ function Navbar() {
                                 <Link
                                     key={item.path}
                                     to={item.path}
+                                    onClick={() => setMenuOpen(false)}
                                     className="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-200"
                                     style={{
                                         color: isActive ? "#22d3ee" : "rgba(255,255,255,0.8)",

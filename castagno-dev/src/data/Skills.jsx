@@ -1,4 +1,4 @@
-import { SiReact, SiTailwindcss, SiJavascript, SiGsap, SiNextdotjs, SiSpringboot, SiSpringsecurity, SiHibernate, SiPhp, SiNestjs, SiTypescript, SiMysql, SiDocker, SiGithub, SiFigma, SiVite, SiPostman, SiSwagger, SiXampp } from "react-icons/si";
+import { SiReact, SiTailwindcss, SiJavascript, SiGsap, SiNextdotjs, SiSpringboot, SiSpringsecurity, SiHibernate, SiPhp, SiNestjs, SiTypescript, SiMysql, SiDocker, SiGithub, SiFigma, SiVite, SiPostman, SiSwagger, SiXampp, SiThreedotjs } from "react-icons/si";
 import { DiJava } from "react-icons/di";
 
 const Skills = [
@@ -10,6 +10,7 @@ const Skills = [
             { name:'JavaScript', status: 'aprendiendo', icon: SiJavascript},
             { name:'GSAP', status: 'aprendiendo', icon: SiGsap},
             { name:'Next.js', status: 'futuro', icon: SiNextdotjs},
+            { name:'Three.js', status: 'aprendiendo', icon: SiThreedotjs},
         ]
     },
     {
@@ -21,12 +22,12 @@ const Skills = [
             { name:'Hibernate', status: 'sabido', icon: SiHibernate},
             { name:'Swagger', status: 'sabido', icon: SiSwagger},
             { name:'PHP', status: 'aprendiendo', icon: SiPhp},
-            { name:'Nest.js', status: 'futuro', icon: SiNestjs},
-            { name:'TypeScript', status: 'futuro', icon: SiTypescript}
+            { name:'Nest.js', status: 'aprendiendo', icon: SiNestjs},
+            { name:'TypeScript', status: 'aprendiendo', icon: SiTypescript}
         ]
     },
     {
-        category: 'Servicios',
+        category: 'DevOps',
         items: [
             { name:'MySQL', status: 'sabido', icon: SiMysql},
             { name:'Docker', status: 'sabido', icon: SiDocker},

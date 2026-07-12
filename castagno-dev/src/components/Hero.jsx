@@ -284,14 +284,14 @@ function Hero() {
                     <div className="absolute top-12 sm:top-16 left-1/2 -translate-x-1/2 text-center w-full px-4">
                         <h1
                             ref={brandRef}
-                            className="text-3xl sm:text-5xl md:text-7xl font-medium uppercase tracking-widest text-white opacity-0 whitespace-nowrap"
+                            className="text-2xl sm:text-5xl md:text-7xl font-medium uppercase tracking-widest text-white opacity-0"
                         >
                             Castagno Dev
                         </h1>
                     </div>
 
                     {/* Foto + texto: columna en móvil, fila en md+ */}
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-14 mt-20 sm:mt-8 px-2">
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-14 mt-24 sm:mt-8 px-2">
 
                         {/* Foto */}
                         <div className="relative shrink-0 w-44 h-60 sm:w-52 sm:h-72 md:w-65 md:h-90">
